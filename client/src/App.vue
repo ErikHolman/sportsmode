@@ -1,5 +1,4 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue';
 import Counter from './components/Counter.vue';
 import FoulTracking from './components/FoulTracking.vue';
 import { ref } from 'vue';
@@ -24,7 +23,6 @@ function onUpdateFouls(event) {
 const points = ref(0);
 
 function onUpdatePoints(event) {
-  console.log(event);
   let prevPoints = points.value;
   let newPoints = event;
 
@@ -43,9 +41,9 @@ function onUpdatePoints(event) {
         <h3 class="counter">{{ point.name }}</h3>
         <Counter class="counter" />
         <Counter
+          class="counter"
           :kind="point.name"
           :value="point.multiplier"
-          class="counter"
           @updatePoints="onUpdatePoints"
         />
       </div>
@@ -55,16 +53,16 @@ function onUpdatePoints(event) {
       <div v-for="(foul, index) in foulTypes" :key="index" class="foul-item">
         <h3 class="counter">{{ foul.name }}</h3>
         <Counter
-          :key="index"
           class="counter"
+          :key="index"
           :kind="foul.kind"
           @updateFouls="onUpdateFouls"
         />
         <FoulTracking
-          :key="index"
           class="timeline"
-          :kind="foul.kind"
           :count="fouls"
+          :key="index"
+          :kind="foul.kind"
           :limit="foul.limit"
         />
       </div>

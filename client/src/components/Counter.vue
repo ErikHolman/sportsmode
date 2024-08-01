@@ -6,7 +6,7 @@ const props = defineProps({
   value: Number,
 });
 
-const emit = defineEmits(['updateFouls', 'updatePoints']);
+const emit = defineEmits(['updateFouls', 'updatePoints', 'updateAttempts']);
 
 const count = ref(0);
 const pointKind = ref(props.value);
@@ -25,17 +25,14 @@ function addCount() {
 
   // Update parent with new data
   if (props.kind == 'foul') {
-    emit('updateFouls', count);
+    emit('updateFouls', count.value);
   } else {
-    emit('updatePoints', pointKind);
+    emit('updatePoints', pointKind.value);
+    emit('updateAttempts', 1);
   }
 }
-function subCount() {
-  // Disable button if '0' and don't go negative
-  if (count.value == 0) {
-    buttonDisabled.value = true;
-  }
 
+function subCount() {
   // Update count, applying modifier if provided
   if (props.value != undefined) {
     count.value = count.value - props.value;
@@ -45,9 +42,15 @@ function subCount() {
 
   // Update parent with new data
   if (props.kind == 'foul') {
-    emit('updateFouls', count);
+    emit('updateFouls', count.value);
   } else {
-    emit('updatePoints', { thing: negative, amount: pointKind });
+    emit('updatePoints', -pointKind.value);
+    emit('updateAttempts', -1);
+  }
+
+  // Disable button if '0' and don't go negative
+  if (count.value == 0) {
+    buttonDisabled.value = true;
   }
 }
 </script>
@@ -57,9 +60,9 @@ function subCount() {
     <div class="counter">
       <button
         class="minus-button"
-        @click="subCount()"
-        :disabled="buttonDisabled"
         title="Remove {{ kind }}"
+        :disabled="buttonDisabled"
+        @click="subCount()"
       >
         <v-icon name="hi-solid-minus-circle" fill="red" scale="2" />
       </button>
