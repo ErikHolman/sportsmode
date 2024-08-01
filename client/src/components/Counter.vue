@@ -28,7 +28,6 @@ function addCount() {
     emit('updateFouls', count.value);
   } else {
     emit('updatePoints', pointKind.value);
-    emit('updateAttempts', 1);
   }
 }
 
@@ -45,7 +44,6 @@ function subCount() {
     emit('updateFouls', count.value);
   } else {
     emit('updatePoints', -pointKind.value);
-    emit('updateAttempts', -1);
   }
 
   // Disable button if '0' and don't go negative
