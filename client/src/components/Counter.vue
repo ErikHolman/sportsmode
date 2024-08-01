@@ -6,7 +6,7 @@ const props = defineProps({
   value: Number,
 });
 
-const emit = defineEmits(['updateFouls', 'updatePoints', 'updateAttempts']);
+const emit = defineEmits(['updateFouls', 'updatePoints']);
 
 const count = ref(0);
 const pointKind = ref(props.value);
