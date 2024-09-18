@@ -1,32 +1,47 @@
 <script setup>
 import Counter from './components/Counter.vue';
-import FoulTracking from './components/FoulTracking.vue';
+// import FoulTracking from './components/FoulTracking.vue';
 import { ref } from 'vue';
 
 const pointTypes = [
-  { name: 'FREE', multiplier: 1 },
+  { name: 'F/T', multiplier: 1 },
   { name: '2', multiplier: 2 },
   { name: '3', multiplier: 3 },
 ];
-const foulTypes = [
-  { name: 'Foul', kind: 'foul', limit: 5 },
-  { name: 'T', kind: 'tech', limit: 2 },
-];
+// const foulTypes = [
+//   { name: 'Foul', kind: 'foul', limit: 5 },
+//   { name: 'T', kind: 'tech', limit: 2 },
+// ];
 
-const fouls = ref(0);
-
-function onUpdateFouls(event) {
-  console.log(event);
-  fouls.value = event.value;
-}
-
+const attempts = ref(0);
+// const fouls = ref(0);
+// const technicals = ref(0);
 const points = ref(0);
+const activity = ref('none');
+
+// function onUpdateFouls(event) {
+//   // let prevFouls = fouls.value;
+//   fouls.value = fouls.value + event;
+
+//   if (fouls.value <= 4) {
+//     activity.value = 'A foul was recorded';
+//   }
+
+//   if (fouls.value >= 5) {
+//     activity.value = 'fould out fool';
+//     alert('boof');
+//   }
+// }
 
 function onUpdatePoints(event) {
   let prevPoints = points.value;
   let newPoints = event;
-
   points.value = prevPoints + newPoints;
+  attempts.value = attempts.value + 1;
+}
+
+function onUpdateAttempt(event) {
+  attempts.value = attempts.value + event;
 }
 </script>
 
@@ -34,12 +49,20 @@ function onUpdatePoints(event) {
   <div class="sports-app">
     <div class="count-wrapper">
       <div class="count-header">
-        <h2>Points</h2>
-        <h2>{{ points }}</h2>
+        <p>
+          Points: {{ points }}<br />
+          Attempts: {{ attempts }}<br />
+          Activity: {{ activity }}
+        </p>
       </div>
       <div v-for="(point, index) in pointTypes" :key="index" class="count-item">
         <h3 class="counter">{{ point.name }}</h3>
-        <Counter class="counter" />
+        <Counter
+          class="counter"
+          kind="'attempt'"
+          value="attempts"
+          @updateAttmept="onUpdateAttempt"
+        />
         <Counter
           class="counter"
           :kind="point.name"
@@ -48,8 +71,8 @@ function onUpdatePoints(event) {
         />
       </div>
     </div>
-    <div class="foul-wrapper">
-      <div class="foul-header"><h2>Fouls</h2></div>
+    <!-- <div class="foul-wrapper">
+      <div class="foul-header"><h2>Fouls: {{ fouls }}/h2></div>
       <div v-for="(foul, index) in foulTypes" :key="index" class="foul-item">
         <h3 class="counter">{{ foul.name }}</h3>
         <Counter
@@ -66,7 +89,7 @@ function onUpdatePoints(event) {
           :limit="foul.limit"
         />
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
